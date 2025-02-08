@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { Box, Stack, ThemeProvider } from '@mui/material';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import Sidebar from '~/components/layout/Sidebar';
 import Header from '~/components/layout/Header';
+import theme from './theme';
 import './globals.css';
 
 const openSans = Open_Sans({
   subsets: ['latin'],
+  variable: '--font-open-sans',
 });
 
 const title = 'InvoiceHub - Invoice Management System';
@@ -46,29 +48,33 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={openSans.className}>
-        <Stack direction="row" alignItems="stretch">
-          <Sidebar />
-          <Box
-            sx={{
-              flexGrow: 1,
-              minHeight: '100svh',
-              backgroundColor: '#F1F5F9',
-            }}
-          >
-            <Stack spacing={2}>
-              <Header />
+      <body className={openSans.variable}>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <Stack direction="row" alignItems="stretch">
+              <Sidebar />
               <Box
                 sx={{
-                  py: '52px',
-                  px: '136px',
+                  width: 'calc(100vw - 280px)',
+                  minHeight: '100svh',
+                  backgroundColor: '#F1F5F9',
                 }}
               >
-                {children}
+                <Stack>
+                  <Header />
+                  <Box
+                    sx={{
+                      py: '52px',
+                      px: '136px',
+                    }}
+                  >
+                    {children}
+                  </Box>
+                </Stack>
               </Box>
             </Stack>
-          </Box>
-        </Stack>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

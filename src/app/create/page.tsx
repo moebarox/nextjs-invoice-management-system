@@ -1,14 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { Stack, Typography, Paper, Box, Divider } from '@mui/material';
 import InvoiceForm from '~/components/invoices/InvoiceForm';
 import { InvoiceFormData, InvoiceStatus } from '~/lib/types/invoice';
 import { useInvoices } from '~/hooks/useInvoices';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 
 export default function CreateInvoice() {
   const {
@@ -121,7 +117,7 @@ export default function CreateInvoice() {
   };
 
   return (
-    <Stack gap={4}>
+    <Stack gap="38px">
       <Typography variant="h4" component="h1">
         Add Invoice
       </Typography>

@@ -2,24 +2,28 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Image from 'next/image';
+import {
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Box,
+  Paper,
+  Chip,
+  IconButton,
+  Menu,
+  MenuItem,
+} from '@mui/material';
 import { useInvoices } from '~/hooks/useInvoices';
 import { formatCurrency } from '~/utils/number';
 import { formatDate } from '~/utils/date';
 import { InvoiceStatus } from '~/lib/types/invoice';
+import { INVOICE_STATUS } from '~/constants/invoice';
 
 const INVOICE_STATUS_COLORS = {
   [InvoiceStatus.PAID]: 'success',
@@ -63,7 +67,7 @@ export default function InvoiceList() {
           pb: '41px',
         }}
       >
-        <TableContainer>
+        <TableContainer sx={{ maxWidth: '100%' }}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -92,31 +96,44 @@ export default function InvoiceList() {
                 >
                   <TableCell component="th" scope="row">
                     <Stack>
-                      <Typography>{invoice.name}</Typography>
-                      <Typography variant="caption">
+                      <Typography variant="body1">{invoice.name}</Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: '#64748B',
+                          fontWeight: 600,
+                        }}
+                      >
                         {invoice.number}
                       </Typography>
                     </Stack>
                   </TableCell>
-                  <TableCell>{formatDate(invoice.dueDate)}</TableCell>
+                  <TableCell>
+                    <Typography variant="body1">
+                      {formatDate(invoice.dueDate)}
+                    </Typography>
+                  </TableCell>
                   <TableCell>
                     <Chip
-                      label={invoice.status}
+                      label={INVOICE_STATUS[invoice.status]}
                       color={INVOICE_STATUS_COLORS[invoice.status]}
                     />
                   </TableCell>
-                  <TableCell>{formatCurrency(invoice.amount)}</TableCell>
                   <TableCell>
-                    <IconButton onClick={handleClick}>Menu</IconButton>
-                    <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                      }}
-                    >
+                    <Typography variant="body1">
+                      {formatCurrency(invoice.amount)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton aria-label="Actions" onClick={handleClick}>
+                      <Image
+                        src="/icon-menu.svg"
+                        alt="Actions"
+                        width={18}
+                        height={18}
+                      />
+                    </IconButton>
+                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
                       <MenuItem onClick={() => handleEdit(invoice.id)}>
                         Edit
                       </MenuItem>

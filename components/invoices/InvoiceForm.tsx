@@ -3,15 +3,19 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useForm, Controller } from 'react-hook-form';
 import { debounce } from 'lodash';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Button from '@mui/material/Button';
-import Grid2 from '@mui/material/Grid2';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import {
+  Button,
+  Grid2,
+  TextField,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Box,
+  Stack,
+} from '@mui/material';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { InvoiceFormData, InvoiceStatus } from '~/lib/types/invoice';
 import { invoiceSchema } from '~/lib/schemas/invoice';
 import { INVOICE_STATUS } from '~/constants/invoice';
@@ -53,15 +57,20 @@ export default function InvoiceForm({
     <Stack component="form" gap="58px" onSubmit={handleSubmit(onSave)}>
       <Grid2 container spacing={2}>
         <Grid2 size={6}>
-          <TextField
-            id="invoice-name"
-            variant="outlined"
-            placeholder="Enter your invoice name"
-            {...register('name')}
-            error={!!errors.name}
-            helperText={errors.name?.message}
-            fullWidth
-          />
+          <FormControl variant="outlined">
+            <InputLabel variant="outlined" htmlFor="invoice-name">
+              Name *
+            </InputLabel>
+            <TextField
+              id="invoice-name"
+              variant="outlined"
+              placeholder="Enter your invoice name"
+              {...register('name')}
+              error={!!errors.name}
+              helperText={errors.name?.message}
+              fullWidth
+            />
+          </FormControl>
         </Grid2>
         <Grid2 size={6}>
           <TextField
@@ -123,9 +132,11 @@ export default function InvoiceForm({
         </Grid2>
       </Grid2>
 
-      <Button variant="contained" type="submit">
-        Add Invoice
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+        <Button variant="contained" type="submit">
+          + Add Invoice
+        </Button>
+      </Box>
     </Stack>
   );
 }

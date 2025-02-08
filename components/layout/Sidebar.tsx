@@ -1,15 +1,21 @@
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Stack from '@mui/material/Stack';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+} from '@mui/material';
 
 export default function SideMenu() {
   return (
     <Box
       sx={{
+        flexShrink: 0,
         width: 280,
         backgroundColor: '#1C2434',
         px: '38px',
@@ -17,25 +23,53 @@ export default function SideMenu() {
         color: '#fff',
       }}
     >
-      <Stack gap={2}>
+      <Stack gap="50px">
         <Box>
           <Image
             src="/logo.svg"
             alt="InvoiceHub logo"
             width={166}
-            height={45}
+            height={44}
             priority
           />
         </Box>
-        <Typography variant="caption">MENU</Typography>
-        <List>
-          <ListItem>
-            <Link href="/create">Add Invoice</Link>
-          </ListItem>
-          <ListItem>
-            <Link href="/">My Invoices</Link>
-          </ListItem>
-        </List>
+        <Stack gap="17px">
+          <Typography variant="body2" sx={{ color: '#9D9D9D' }}>
+            MENU
+          </Typography>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Image
+                    src="/icon-paragraph.svg"
+                    alt="Add Invoice"
+                    width={18}
+                    height={18}
+                  />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link href="/create">Add Invoice</Link>
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Image
+                    src="/icon-list.svg"
+                    alt="My Invoices"
+                    width={18}
+                    height={18}
+                  />
+                </ListItemIcon>
+                <ListItemText>
+                  <Link href="/">My Invoices</Link>
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Stack>
       </Stack>
     </Box>
   );
