@@ -1,12 +1,12 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import InvoiceList from '~/components/invoices/InvoiceList';
+import InvoiceForm from '~/components/invoices/InvoiceForm';
 
-export default function MyInvoice() {
+export default function CreateInvoice() {
   return (
     <Stack>
       <Typography variant="h1">My Invoices</Typography>
-      <InvoiceList />
+      <InvoiceForm />
     </Stack>
   );
 }
