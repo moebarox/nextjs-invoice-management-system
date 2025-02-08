@@ -9,15 +9,14 @@ import { useInvoices } from '~/hooks/useInvoices';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import { redirect } from 'next/navigation';
+import dayjs from 'dayjs';
 
-export default function CreateInvoice() {
-  const {
-    invoices,
-    getInvoiceFormData,
-    saveInvoiceFormData,
-    fetchInvoices,
-    addInvoice,
-  } = useInvoices();
+export default function EditInvoice({
+  params,
+}: Readonly<{ params: { id: string } }>) {
+  const { invoices, getInvoiceById, fetchInvoices, updateInvoice } =
+    useInvoices();
 
   const fetchedRef = useRef(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -42,20 +41,19 @@ export default function CreateInvoice() {
       return;
     }
 
-    // Generate a new invoice number
-    const increment = `00${invoices.length + 1}`.slice(-3);
-    const invoiceNumber = `INV${new Date().toISOString().split('T')[0].replaceAll('-', '')}${increment}`;
+    const invoice = getInvoiceById(params.id);
+    console.log(invoice);
 
-    // Get invoice form data from local storage
-    const invoiceFormData = getInvoiceFormData();
+    if (!invoice) {
+      redirect('/');
+    }
 
-    // Initialize the invoice form
     setInvoice({
-      name: invoiceFormData?.name || '',
-      number: invoiceFormData?.number || invoiceNumber,
-      dueDate: invoiceFormData?.dueDate || null,
-      amount: invoiceFormData?.amount || '',
-      status: invoiceFormData?.status || InvoiceStatus.PAID,
+      name: invoice.name,
+      number: invoice.number,
+      dueDate: dayjs(invoice.dueDate),
+      amount: invoice.amount,
+      status: invoice.status,
     });
   }, [invoices]);
 
@@ -78,23 +76,10 @@ export default function CreateInvoice() {
       return;
     }
 
-    setInvoice((prevInvoice) => {
-      const updatedInvoice = {
-        ...prevInvoice,
-        ...invoice,
-      };
-
-      // Save invoice form data to local storage
-      saveInvoiceFormData({
-        name: updatedInvoice.name,
-        number: updatedInvoice.number,
-        amount: updatedInvoice.amount,
-        status: updatedInvoice.status,
-        dueDate: updatedInvoice.dueDate || null,
-      });
-
-      return updatedInvoice;
-    });
+    setInvoice((prevInvoice) => ({
+      ...prevInvoice,
+      ...invoice,
+    }));
   };
 
   const clearForm = () => {
@@ -108,7 +93,7 @@ export default function CreateInvoice() {
   };
 
   const handleSave = (invoice: InvoiceFormData) => {
-    addInvoice({
+    updateInvoice(params.id, {
       name: invoice.name,
       number: invoice.number,
       amount: invoice.amount,
@@ -123,7 +108,7 @@ export default function CreateInvoice() {
   return (
     <Stack gap={4}>
       <Typography variant="h4" component="h1">
-        Add Invoice
+        Edit Invoice
       </Typography>
       {isInitialized && (
         <Paper>

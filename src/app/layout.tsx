@@ -1,9 +1,14 @@
+import type { Metadata } from 'next';
+import { Open_Sans } from 'next/font/google';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import type { Metadata } from 'next';
-import SideMenu from '~/components/layout/SideMenu';
+import Sidebar from '~/components/layout/Sidebar';
 import Header from '~/components/layout/Header';
 import './globals.css';
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+});
 
 const title = 'InvoiceHub - Invoice Management System';
 const description =
@@ -41,25 +46,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <Box sx={{ display: 'flex' }}>
-          <SideMenu />
-          {/* Main content */}
-          <Box>
-            <Stack
-              spacing={2}
-              sx={{
-                alignItems: 'center',
-                mx: 3,
-                pb: 5,
-                mt: { xs: 8, md: 0 },
-              }}
-            >
+      <body className={openSans.className}>
+        <Stack direction="row" alignItems="stretch">
+          <Sidebar />
+          <Box
+            sx={{
+              flexGrow: 1,
+              minHeight: '100svh',
+              backgroundColor: '#F1F5F9',
+            }}
+          >
+            <Stack spacing={2}>
               <Header />
-              {children}
+              <Box
+                sx={{
+                  py: '52px',
+                  px: '136px',
+                }}
+              >
+                {children}
+              </Box>
             </Stack>
           </Box>
-        </Box>
+        </Stack>
       </body>
     </html>
   );

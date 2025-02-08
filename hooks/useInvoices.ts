@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Invoice } from '~/lib/types/invoice';
+import type { Invoice, InvoiceFormData } from '~/lib/types/invoice';
 
 export function useInvoices() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -9,8 +9,12 @@ export function useInvoices() {
     return invoice ? JSON.parse(invoice) : null;
   };
 
-  const saveInvoiceFormData = (data: Partial<Invoice>) => {
+  const saveInvoiceFormData = (data: Partial<InvoiceFormData>) => {
     localStorage.setItem('invoice-form', JSON.stringify(data));
+  };
+
+  const getInvoiceById = (id: string): Invoice | undefined => {
+    return invoices.find((invoice) => invoice.id === id);
   };
 
   const fetchInvoices = async () => {
@@ -47,6 +51,7 @@ export function useInvoices() {
     invoices,
     getInvoiceFormData,
     saveInvoiceFormData,
+    getInvoiceById,
     fetchInvoices,
     addInvoice,
     updateInvoice,

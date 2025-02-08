@@ -1,8 +1,8 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { useRouter } from 'next/navigation';
+import { useForm, Controller } from 'react-hook-form';
+import { debounce } from 'lodash';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Grid2 from '@mui/material/Grid2';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,67 +12,55 @@ import TextField from '@mui/material/TextField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { InvoiceStatus } from '~/lib/types/invoice';
-import { useInvoices } from '~/hooks/useInvoices';
+import { InvoiceFormData, InvoiceStatus } from '~/lib/types/invoice';
+import { invoiceSchema } from '~/lib/schemas/invoice';
+import { INVOICE_STATUS } from '~/constants/invoice';
 
-export default function InvoiceForm() {
-  const router = useRouter();
-  const { invoices, getInvoiceFormData, saveInvoiceFormData, addInvoice } =
-    useInvoices();
-
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const [dueDate, setDueDate] = useState<Dayjs | null>(null);
-  const [amount, setAmount] = useState(0);
-  const [status, setStatus] = useState(InvoiceStatus.PAID);
-
-  useEffect(() => {
-    // Generate a new invoice number
-    const increment = `00${invoices.length + 1}`.slice(-3);
-    const invoiceNumber = `INV${new Date().toISOString().split('T')[0].replaceAll('-', '')}${increment}`;
-
-    // Get invoice form data from local storage
-    const invoiceFormData = getInvoiceFormData();
-
-    setName(invoiceFormData?.name || '');
-    setNumber(invoiceFormData?.number || invoiceNumber);
-    setDueDate(dayjs(invoiceFormData?.dueDate || new Date()));
-    setAmount(invoiceFormData?.amount || 0);
-    setStatus(invoiceFormData.status || InvoiceStatus.PAID);
-  }, []);
+export default function InvoiceForm({
+  invoice,
+  onUpdate,
+  onSave,
+}: {
+  invoice: InvoiceFormData;
+  onUpdate: (invoice: Partial<InvoiceFormData>) => void;
+  onSave: (invoice: InvoiceFormData) => void;
+}) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<InvoiceFormData>({
+    resolver: zodResolver(invoiceSchema),
+    defaultValues: invoice,
+    mode: 'onChange',
+  });
 
   useEffect(() => {
-    saveInvoiceFormData({
-      name,
-      number,
-      dueDate: dueDate?.format('YYYY-MM-DD'),
-      amount,
-      status,
-    });
-  }, [name, number, dueDate, amount, status]);
+    const debouncedUpdate = debounce((value) => {
+      onUpdate(value);
+    }, 300);
 
-  const handleSave = () => {
-    addInvoice({
-      name,
-      number,
-      amount,
-      status,
-      dueDate: dueDate!.format('YYYY-MM-DD'),
-    });
-
-    router.push('/');
-  };
+    const subscription = watch(debouncedUpdate);
+    return () => {
+      subscription.unsubscribe();
+      debouncedUpdate.cancel();
+    };
+  }, [watch]);
 
   return (
-    <Stack>
+    <Stack component="form" gap="58px" onSubmit={handleSubmit(onSave)}>
       <Grid2 container spacing={2}>
         <Grid2 size={6}>
           <TextField
             id="invoice-name"
             variant="outlined"
             placeholder="Enter your invoice name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            {...register('name')}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            fullWidth
           />
         </Grid2>
         <Grid2 size={6}>
@@ -80,16 +68,25 @@ export default function InvoiceForm() {
             id="invoice-number"
             variant="outlined"
             placeholder="Enter your invoice number"
-            value={number}
+            {...register('number')}
+            error={!!errors.number}
+            helperText={errors.number?.message}
             disabled
-            onChange={(e) => setNumber(e.target.value)}
+            fullWidth
           />
         </Grid2>
         <Grid2 size={6}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              value={dueDate}
-              onChange={(value: Dayjs | null) => setDueDate(value)}
+            <Controller
+              name="dueDate"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  value={dayjs(field.value)}
+                  onChange={(value: Dayjs | null) => field.onChange(value)}
+                  sx={{ width: '100%' }}
+                />
+              )}
             />
           </LocalizationProvider>
         </Grid2>
@@ -98,27 +95,35 @@ export default function InvoiceForm() {
             id="invoice-amount"
             variant="outlined"
             placeholder="Enter your invoice amount"
-            value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
+            {...register('amount')}
+            error={!!errors.amount}
+            helperText={errors.amount?.message}
+            fullWidth
           />
         </Grid2>
         <Grid2 size={6}>
-          <Select
-            labelId="invoice-status"
-            id="invoice-status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as InvoiceStatus)}
-          >
-            {Object.values(InvoiceStatus).map((status) => (
-              <MenuItem key={status} value={status}>
-                {status}
-              </MenuItem>
-            ))}
-          </Select>
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <Select
+                value={field.value}
+                onChange={(e) => field.onChange(e.target.value)}
+                error={!!errors.status}
+                fullWidth
+              >
+                {Object.values(InvoiceStatus).map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {INVOICE_STATUS[status]}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
         </Grid2>
       </Grid2>
 
-      <Button variant="contained" onClick={handleSave}>
+      <Button variant="contained" type="submit">
         Add Invoice
       </Button>
     </Stack>

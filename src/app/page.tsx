@@ -4,8 +4,10 @@ import InvoiceList from '~/components/invoices/InvoiceList';
 
 export default function MyInvoice() {
   return (
-    <Stack>
-      <Typography variant="h1">My Invoices</Typography>
+    <Stack gap={4}>
+      <Typography variant="h4" component="h1">
+        My Invoices
+      </Typography>
       <InvoiceList />
     </Stack>
   );
