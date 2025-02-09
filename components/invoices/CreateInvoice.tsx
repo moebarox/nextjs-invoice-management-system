@@ -140,6 +140,7 @@ export default function CreateInvoice() {
           <Box sx={{ p: '26px' }}>
             <InvoiceForm
               invoice={invoice}
+              submitText="+ Add Invoice"
               onUpdate={handleUpdate}
               onSave={handleSave}
             />

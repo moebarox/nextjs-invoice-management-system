@@ -119,6 +119,7 @@ export default function EditInvoice() {
           <Box sx={{ p: '26px' }}>
             <InvoiceForm
               invoice={invoice}
+              submitText="Save Invoice"
               onUpdate={handleUpdate}
               onSave={handleSave}
             />

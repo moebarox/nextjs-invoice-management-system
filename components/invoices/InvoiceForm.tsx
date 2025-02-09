@@ -24,10 +24,12 @@ import Toast from '~/components/base/Toast';
 
 export default function InvoiceForm({
   invoice,
+  submitText,
   onUpdate,
   onSave,
 }: {
   invoice: InvoiceFormData;
+  submitText?: string;
   onUpdate: (invoice: Partial<InvoiceFormData>) => void;
   onSave: (invoice: InvoiceFormData) => void;
 }) {
@@ -189,7 +191,7 @@ export default function InvoiceForm({
 
       <Box sx={{ display: 'flex', justifyContent: 'end' }}>
         <Button variant="contained" type="submit">
-          + Add Invoice
+          {submitText}
         </Button>
       </Box>
 

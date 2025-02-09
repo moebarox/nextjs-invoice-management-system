@@ -1,8 +1,28 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
-import { Box, Stack, Typography, IconButton } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Button,
+} from '@mui/material';
 import ThemeSwitch from '~/components/base/ThemeSwitch';
 
 export default function Header() {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Box
       sx={{
@@ -53,37 +73,63 @@ export default function Header() {
             />
           </IconButton>
         </Stack>
-        <Stack direction="row" alignItems="center" gap="15px">
-          <Stack>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 600,
-                textAlign: 'right',
-              }}
-            >
-              John Doe
-            </Typography>
-            <Typography
-              variant="caption"
-              sx={{
-                fontSize: '12px',
-                fontWeight: 600,
-                color: '#637381',
-                textAlign: 'right',
-              }}
-            >
-              Verified Member
-            </Typography>
+
+        <Button onClick={handleClick} sx={{ p: 0 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap="15px"
+            sx={{ cursor: 'pointer' }}
+          >
+            <Stack>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 600,
+                  textAlign: 'right',
+                  color: '#212B36',
+                }}
+              >
+                John Doe
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: '#637381',
+                  textAlign: 'right',
+                }}
+              >
+                Verified Member
+              </Typography>
+            </Stack>
+            <Stack direction="row" alignItems="center" gap="10px">
+              <Image
+                src="/avatar.png"
+                alt="Avatar"
+                width={46}
+                height={46}
+                priority
+              />
+              <Image
+                src="/icon-chevron-down.svg"
+                alt="Chevron"
+                width={20}
+                height={20}
+              />
+            </Stack>
           </Stack>
-          <Image
-            src="/avatar.png"
-            alt="Avatar"
-            width={46}
-            height={46}
-            priority
-          />
-        </Stack>
+        </Button>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleClose}>Account</MenuItem>
+          <MenuItem onClick={handleClose}>Logout</MenuItem>
+        </Menu>
       </Stack>
     </Box>
   );
