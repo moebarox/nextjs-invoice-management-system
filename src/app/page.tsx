@@ -16,8 +16,8 @@ import InvoiceList from '~/components/invoices/InvoiceList';
 import { INVOICE_STATUS } from '~/constants/invoice';
 import { useInvoices } from '~/hooks/useInvoices';
 
-// Create a memoized icon for the chevron
-const ChevronIcon = memo((props: any) => (
+// Create a memoized icon to avoid glitching
+const ChevronIcon = memo((props) => (
   <Image
     {...props}
     src="/icon-chevron-down.svg"
@@ -27,6 +27,7 @@ const ChevronIcon = memo((props: any) => (
     style={{ top: 7 }}
   />
 ));
+ChevronIcon.displayName = 'ChevronIcon';
 
 export default function MyInvoice({
   searchParams,
