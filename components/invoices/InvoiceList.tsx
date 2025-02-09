@@ -95,124 +95,142 @@ export default function InvoiceList({
           pb: '41px',
         }}
       >
-        <TableContainer sx={{ maxWidth: '100%' }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
-                  Invoice
-                </TableCell>
-                <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
-                  Due Date
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
-                >
-                  Status
-                </TableCell>
-                <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
-                  Amount
-                </TableCell>
-                <TableCell
-                  align="center"
-                  sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
-                >
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow
-                  key={invoice.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    <Stack>
-                      <Typography variant="body1">{invoice.name}</Typography>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: '#64748B',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {invoice.number}
-                      </Typography>
-                    </Stack>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">
-                      {formatDate(invoice.dueDate)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip
-                      label={INVOICE_STATUS[invoice.status]}
-                      color={INVOICE_STATUS_COLORS[invoice.status]}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body1">
-                      {formatCurrency(invoice.amount)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      aria-label="Actions"
-                      onClick={(e) => handleClick(e, invoice.id)}
+        {invoices.length === 0 ? (
+          <Typography variant="body1" component="p" align="center">
+            No invoice found
+          </Typography>
+        ) : (
+          <>
+            <TableContainer sx={{ maxWidth: '100%' }}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
                     >
-                      <Image
-                        src="/icon-menu.svg"
-                        alt="Actions"
-                        width={18}
-                        height={18}
-                      />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl[invoice.id] || null}
-                      open={Boolean(anchorEl[invoice.id])}
-                      onClose={() => handleClose(invoice.id)}
+                      Invoice
+                    </TableCell>
+                    <TableCell
+                      sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
                     >
-                      <MenuItem onClick={() => handleEdit(invoice.id)}>
-                        Edit
-                      </MenuItem>
-                      <MenuItem onClick={() => handleOpenDeleteDialog(invoice)}>
-                        Delete
-                      </MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      Due Date
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
+                    >
+                      Status
+                    </TableCell>
+                    <TableCell
+                      sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
+                    >
+                      Amount
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
+                    >
+                      Actions
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {invoices.map((invoice) => (
+                    <TableRow
+                      key={invoice.id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        <Stack>
+                          <Typography variant="body1">
+                            {invoice.name}
+                          </Typography>
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              color: '#64748B',
+                              fontWeight: 600,
+                            }}
+                          >
+                            {invoice.number}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body1">
+                          {formatDate(invoice.dueDate)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={INVOICE_STATUS[invoice.status]}
+                          color={INVOICE_STATUS_COLORS[invoice.status]}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body1">
+                          {formatCurrency(invoice.amount)}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          aria-label="Actions"
+                          onClick={(e) => handleClick(e, invoice.id)}
+                        >
+                          <Image
+                            src="/icon-menu.svg"
+                            alt="Actions"
+                            width={18}
+                            height={18}
+                          />
+                        </IconButton>
+                        <Menu
+                          anchorEl={anchorEl[invoice.id] || null}
+                          open={Boolean(anchorEl[invoice.id])}
+                          onClose={() => handleClose(invoice.id)}
+                        >
+                          <MenuItem onClick={() => handleEdit(invoice.id)}>
+                            Edit
+                          </MenuItem>
+                          <MenuItem
+                            onClick={() => handleOpenDeleteDialog(invoice)}
+                          >
+                            Delete
+                          </MenuItem>
+                        </Menu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Are you sure you want to delete?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Are you sure you want to delete invoice{' '}
-              <strong>{deletedInvoice?.number}</strong>? This action cannot be
-              undone.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions sx={{ px: '24px', pb: '16px' }}>
-            <Button size="small" onClick={handleCloseDeleteDialog}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              size="small"
-              color="error"
-              onClick={handleProcessDelete}
-              autoFocus
-            >
-              Delete Anyway
-            </Button>
-          </DialogActions>
-        </Dialog>
+            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+              <DialogTitle>Are you sure you want to delete?</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Are you sure you want to delete invoice{' '}
+                  <strong>{deletedInvoice?.number}</strong>? This action cannot
+                  be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions sx={{ px: '24px', pb: '16px' }}>
+                <Button size="small" onClick={handleCloseDeleteDialog}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="error"
+                  onClick={handleProcessDelete}
+                  autoFocus
+                >
+                  Delete Anyway
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        )}
       </Box>
     </Paper>
   );
