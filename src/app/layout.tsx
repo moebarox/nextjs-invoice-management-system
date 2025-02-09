@@ -6,7 +6,6 @@ import Sidebar from '~/components/layout/Sidebar';
 import Header from '~/components/layout/Header';
 import theme from './theme';
 import './globals.css';
-import { useState } from 'react';
 
 const openSans = Open_Sans({
   subsets: ['latin'],

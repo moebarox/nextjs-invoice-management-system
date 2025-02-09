@@ -1,6 +1,6 @@
 # InvoiceHub - Invoice Management System
 
-IncoiceHub is an invoice management system app that streamlines the process of creating and managing invoices.
+IncoiceHub is an invoice management system app that streamlines the process of creating and managing invoices. You can see the live demo [here](https://nextjs-invoice-management-system-nks5.vercel.app/).
 
 ## Dependencies
 
@@ -45,20 +45,25 @@ The project structure is as follows:
 ```bash
 .
 ├── __tests__                             # Test files
-├── app
-│   ├── page.tsx                          # Main page component
-│   ├── page.module.scss                  # Page module styles
-│   └── layout.tsx                        # Layout component
 ├── components
-│   └── SampleComponent                   # SampleComponent directory
-│       ├── SampleComponent.tsx           # SampleComponent component
-│       ├── SampleComponent.module.scss   # SampleComponent module styles
-│       └── index.tsx                     # Export SampleComponent component
-├── constants                             # Constants
-├── helpers                               # Helper functions
-├── lib                                   # Utility functions
-├── types                                 # Type definitions
-├── styles                                # Style directory
+│   ├── invoices                          # Invoices directory
+│   ├── base                              # Base directory
+│   └── layout                            # Layout component
+├── src
+│   ├── app                               # App directory
+│   │   ├── create
+│   │   │   └── page.tsx                  # Create invoice page component
+│   │   ├── edit
+│   │   │   └── [id]
+│   │   │       └── page.tsx              # Edit invoice page component
+│   │   ├── page.tsx                      # Invoice list page component
+│   │   └── layout.tsx                    # Layout component
+├── constants                             # Constants directory
+├── hooks                                 # Hooks directory
+├── lib                                   # Library directory
+│   ├── schemas                           # Schema definitions
+│   └── types                             # Type definitions
+├── utils                                 # Utility functions
 ├── public                                # Public assets
 ├── next.config.ts                        # Next.js configuration
 ├── jest.config.ts                        # Jest configuration
