@@ -18,6 +18,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from '@mui/material';
 import { formatCurrency } from '~/utils/number';
 import { formatDate } from '~/utils/date';
@@ -33,11 +39,20 @@ const INVOICE_STATUS_COLORS: Record<
   [InvoiceStatus.PENDING]: 'warning',
 };
 
-export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
+export default function InvoiceList({
+  invoices,
+  onDelete,
+}: {
+  invoices: Invoice[];
+  onDelete: (id: string) => void;
+}) {
   const router = useRouter();
+
   const [anchorEl, setAnchorEl] = useState<{
     [key: string]: HTMLElement | null;
   }>({});
+  const [deletedInvoice, setDeletedInvoice] = useState<Invoice | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -54,8 +69,21 @@ export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
     router.push(`/edit/${id}`);
   };
 
-  const handleDelete = (id: string) => {
-    handleClose(id);
+  const handleOpenDeleteDialog = (invoice: Invoice) => {
+    handleClose(invoice.id);
+    setOpenDialog(true);
+    setDeletedInvoice(invoice);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    handleClose(deletedInvoice!.id);
+    setDeletedInvoice(null);
+    setOpenDialog(false);
+  };
+
+  const handleProcessDelete = () => {
+    onDelete(deletedInvoice!.id);
+    handleCloseDeleteDialog();
   };
 
   return (
@@ -77,13 +105,19 @@ export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
                 <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
                   Due Date
                 </TableCell>
-                <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
+                <TableCell
+                  align="center"
+                  sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
+                >
                   Status
                 </TableCell>
                 <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
                   Amount
                 </TableCell>
-                <TableCell sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}>
+                <TableCell
+                  align="center"
+                  sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
+                >
                   Action
                 </TableCell>
               </TableRow>
@@ -113,7 +147,7 @@ export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
                       {formatDate(invoice.dueDate)}
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <Chip
                       label={INVOICE_STATUS[invoice.status]}
                       color={INVOICE_STATUS_COLORS[invoice.status]}
@@ -144,7 +178,7 @@ export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
                       <MenuItem onClick={() => handleEdit(invoice.id)}>
                         Edit
                       </MenuItem>
-                      <MenuItem onClick={() => handleDelete(invoice.id)}>
+                      <MenuItem onClick={() => handleOpenDeleteDialog(invoice)}>
                         Delete
                       </MenuItem>
                     </Menu>
@@ -154,6 +188,31 @@ export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Are you sure you want to delete?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete invoice{' '}
+              <strong>{deletedInvoice?.number}</strong>? This action cannot be
+              undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions sx={{ px: '24px', pb: '16px' }}>
+            <Button size="small" onClick={handleCloseDeleteDialog}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              color="error"
+              onClick={handleProcessDelete}
+              autoFocus
+            >
+              Delete Anyway
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Paper>
   );

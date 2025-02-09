@@ -13,6 +13,10 @@ export function useInvoices() {
     localStorage.setItem('invoice-form', JSON.stringify(data));
   };
 
+  const deleteInvoiceFormData = () => {
+    localStorage.removeItem('invoice-form');
+  };
+
   const getInvoiceById = (id: string): Invoice | undefined => {
     return invoices.find((invoice) => invoice.id === id);
   };
@@ -74,6 +78,7 @@ export function useInvoices() {
     invoices,
     getInvoiceFormData,
     saveInvoiceFormData,
+    deleteInvoiceFormData,
     getInvoiceById,
     fetchInvoices,
     addInvoice,

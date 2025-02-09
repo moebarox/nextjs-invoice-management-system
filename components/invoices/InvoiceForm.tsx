@@ -37,7 +37,6 @@ export default function InvoiceForm({
     handleSubmit,
     control,
     watch,
-    reset,
     formState: { errors },
   } = useForm<InvoiceFormData>({
     resolver: zodResolver(invoiceSchema),
@@ -59,12 +58,7 @@ export default function InvoiceForm({
 
   const handleSave = (data: InvoiceFormData) => {
     onSave(data);
-    resetForm();
     setOpenToast(true);
-  };
-
-  const resetForm = () => {
-    reset({ ...invoice });
   };
 
   return (

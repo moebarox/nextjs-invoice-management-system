@@ -38,7 +38,6 @@ export default function EditInvoice({
     }
 
     const invoice = getInvoiceById(params.id);
-    console.log(invoice);
 
     if (!invoice) {
       redirect('/');

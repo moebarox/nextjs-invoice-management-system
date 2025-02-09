@@ -96,7 +96,7 @@ const theme = createTheme({
           textTransform: 'none',
           variants: [
             {
-              props: { variant: 'contained' },
+              props: { variant: 'contained', size: 'medium' },
               style: {
                 backgroundColor: '#3C50E0',
                 boxShadow: 'none',

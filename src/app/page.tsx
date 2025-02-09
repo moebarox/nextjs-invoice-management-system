@@ -35,7 +35,7 @@ export default function MyInvoice({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const router = useRouter();
-  const { invoices, fetchInvoices } = useInvoices();
+  const { invoices, fetchInvoices, deleteInvoice } = useInvoices();
 
   const [keywords, setKeywords] = useState('');
   const [status, setStatus] = useState('');
@@ -101,7 +101,8 @@ export default function MyInvoice({
           </FormControl>
         </Stack>
       </Stack>
-      <InvoiceList invoices={invoices} />
+
+      <InvoiceList invoices={invoices} onDelete={deleteInvoice} />
     </Stack>
   );
 }

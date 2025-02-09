@@ -5,17 +5,21 @@ import { Stack, Typography, Paper, Box, Divider } from '@mui/material';
 import InvoiceForm from '~/components/invoices/InvoiceForm';
 import { InvoiceFormData, InvoiceStatus } from '~/lib/types/invoice';
 import { useInvoices } from '~/hooks/useInvoices';
+import { generateInvoiceNumber } from '~/utils/invoice';
 
 export default function CreateInvoice() {
   const {
     invoices,
     getInvoiceFormData,
     saveInvoiceFormData,
+    deleteInvoiceFormData,
     fetchInvoices,
     addInvoice,
   } = useInvoices();
 
+  // Flag to track if invoices have been fetched
   const fetchedRef = useRef(false);
+
   const [isInitialized, setIsInitialized] = useState(false);
   const [invoice, setInvoice] = useState<InvoiceFormData>({
     name: '',
@@ -39,8 +43,7 @@ export default function CreateInvoice() {
     }
 
     // Generate a new invoice number
-    const increment = `00${invoices.length + 1}`.slice(-3);
-    const invoiceNumber = `INV${new Date().toISOString().split('T')[0].replaceAll('-', '')}${increment}`;
+    const invoiceNumber = generateInvoiceNumber(invoices[0]?.number || '');
 
     // Get invoice form data from local storage
     const invoiceFormData = getInvoiceFormData();
@@ -111,6 +114,7 @@ export default function CreateInvoice() {
       status: invoice.status!,
       dueDate: invoice.dueDate!.format('YYYY-MM-DD'),
     });
+    deleteInvoiceFormData();
 
     clearForm();
   };
