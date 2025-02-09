@@ -124,7 +124,7 @@ export default function InvoiceForm({
                 control={control}
                 render={({ field }) => (
                   <DatePicker
-                    value={dayjs(field.value)}
+                    value={field.value ? dayjs(field.value) : null}
                     onChange={(value: Dayjs | null) => field.onChange(value)}
                     sx={{ width: '100%' }}
                   />

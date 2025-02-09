@@ -1,5 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   Typography,
   Box,
@@ -12,6 +15,12 @@ import {
 } from '@mui/material';
 
 export default function SideMenu() {
+  const pathName = usePathname();
+
+  const isSelected = (path: string) => {
+    return pathName === path;
+  };
+
   return (
     <Box
       sx={{
@@ -39,7 +48,7 @@ export default function SideMenu() {
           </Typography>
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton selected={isSelected('/create')}>
                 <ListItemIcon>
                   <Image
                     src="/icon-paragraph.svg"
@@ -54,7 +63,7 @@ export default function SideMenu() {
               </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton selected={isSelected('/')}>
                 <ListItemIcon>
                   <Image
                     src="/icon-list.svg"

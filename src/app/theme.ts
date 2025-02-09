@@ -185,6 +185,15 @@ const theme = createTheme({
           gap: '10px',
           paddingLeft: 0,
           paddingRight: 0,
+          '&.Mui-selected': {
+            backgroundColor: 'transparent',
+            ':hover': {
+              backgroundColor: 'transparent',
+            },
+            '.MuiListItemText-root': {
+              color: '#F4F4F4',
+            },
+          },
         },
       },
     },
@@ -192,6 +201,13 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           minWidth: 'unset',
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        root: {
+          color: '#9D9D9D',
         },
       },
     },
