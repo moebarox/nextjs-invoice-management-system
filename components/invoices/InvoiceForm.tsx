@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import Image from 'next/image';
 import { useForm, Controller } from 'react-hook-form';
 import { debounce } from 'lodash';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,6 +15,7 @@ import {
   Box,
   Stack,
   Typography,
+  InputAdornment,
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -21,6 +23,19 @@ import { InvoiceFormData } from '~/lib/types/invoice';
 import { invoiceSchema } from '~/lib/schemas/invoice';
 import { INVOICE_STATUS } from '~/constants/invoice';
 import Toast from '~/components/base/Toast';
+
+// Create a memoized icon to avoid glitching
+const ChevronIcon = memo((props) => (
+  <Image
+    {...props}
+    src="/icon-chevron-down.svg"
+    alt="Filter"
+    width={24}
+    height={24}
+    style={{ top: 14, right: 16 }}
+  />
+));
+ChevronIcon.displayName = 'ChevronIcon';
 
 export default function InvoiceForm({
   invoice,
@@ -128,7 +143,13 @@ export default function InvoiceForm({
                   <DatePicker
                     value={field.value ? dayjs(field.value) : null}
                     onChange={(value: Dayjs | null) => field.onChange(value)}
-                    sx={{ width: '100%' }}
+                    slotProps={{
+                      textField: {
+                        error: !!errors.dueDate,
+                        helperText: errors.dueDate?.message,
+                        fullWidth: true,
+                      },
+                    }}
                   />
                 )}
               />
@@ -153,6 +174,13 @@ export default function InvoiceForm({
               error={!!errors.amount}
               helperText={errors.amount?.message}
               fullWidth
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">Rp</InputAdornment>
+                  ),
+                },
+              }}
             />
           </FormControl>
         </Grid2>
@@ -176,6 +204,7 @@ export default function InvoiceForm({
                   onChange={(e) => field.onChange(e.target.value)}
                   error={!!errors.status}
                   fullWidth
+                  IconComponent={ChevronIcon}
                 >
                   {Object.entries(INVOICE_STATUS).map((status) => (
                     <MenuItem key={status[0]} value={status[0]}>

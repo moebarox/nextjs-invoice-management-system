@@ -1,7 +1,14 @@
 import { memo, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { FormControl, MenuItem, Select, Stack, TextField } from '@mui/material';
+import {
+  FormControl,
+  InputAdornment,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
 import { INVOICE_STATUS } from '~/constants/invoice';
 import { debounce } from 'lodash';
 
@@ -50,6 +57,20 @@ export default function InvoiceListFilter() {
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, keywords: e.target.value }))
           }
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start" sx={{ mt: '0 !important' }}>
+                  <Image
+                    src="/icon-search.svg"
+                    alt="Search"
+                    width={18}
+                    height={18}
+                  />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
       </FormControl>
       <FormControl variant="filled" size="small" sx={{ minWidth: 135 }}>

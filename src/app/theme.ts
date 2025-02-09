@@ -71,6 +71,18 @@ const theme = createTheme({
         notchedOutline: {
           border: '1.5px solid #E2E8F0',
         },
+        adornedStart: {
+          paddingLeft: 0,
+          '.MuiInputAdornment-root': {
+            backgroundColor: '#D9D9D9',
+            padding: '13px 28px',
+            maxHeight: 'unset',
+            marginRight: 0,
+            borderTopLeftRadius: '4px',
+            borderBottomLeftRadius: '4px',
+            color: '#64748B',
+          },
+        },
       },
     },
     MuiFilledInput: {
@@ -92,6 +104,9 @@ const theme = createTheme({
           color: '#7E7E7E',
           '::placeholder': {
             color: '#B5B7C0',
+          },
+          '.MuiInputAdornment-positionStart + &': {
+            paddingLeft: 0,
           },
         },
       },
