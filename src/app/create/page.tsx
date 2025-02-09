@@ -112,7 +112,6 @@ export default function CreateInvoice() {
       dueDate: invoice.dueDate!.format('YYYY-MM-DD'),
     });
 
-    // TODO: fix clear form
     clearForm();
   };
 

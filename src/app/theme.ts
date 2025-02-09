@@ -22,6 +22,20 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          transform: 'none',
+          position: 'relative',
+          pointerEvents: 'auto',
+          fontWeight: 600,
+          fontSize: 14,
+          color: '#212b36',
+          display: 'flex',
+          gap: '4px',
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -41,6 +55,14 @@ const theme = createTheme({
         },
         notchedOutline: {
           border: '1.5px solid #E2E8F0',
+        },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          marginLeft: 0,
+          marginRight: 0,
         },
       },
     },
@@ -146,6 +168,31 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           minWidth: 'unset',
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#E1F9F0',
+          border: 'none',
+          borderLeft: '7px solid #34D399',
+          padding: '32px',
+          borderRadius: '3px',
+        },
+        message: {
+          color: '#637381',
+          fontSize: 16,
+          fontWeight: 400,
+        },
+      },
+    },
+    MuiAlertTitle: {
+      styleOverrides: {
+        root: {
+          color: '#004434',
+          fontSize: 16,
+          fontWeight: 700,
         },
       },
     },

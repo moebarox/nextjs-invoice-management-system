@@ -25,7 +25,10 @@ import { formatDate } from '~/utils/date';
 import { InvoiceStatus } from '~/lib/types/invoice';
 import { INVOICE_STATUS } from '~/constants/invoice';
 
-const INVOICE_STATUS_COLORS = {
+const INVOICE_STATUS_COLORS: Record<
+  InvoiceStatus,
+  'success' | 'error' | 'warning'
+> = {
   [InvoiceStatus.PAID]: 'success',
   [InvoiceStatus.UNPAID]: 'error',
   [InvoiceStatus.PENDING]: 'warning',
