@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {
@@ -19,10 +19,9 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { useInvoices } from '~/hooks/useInvoices';
 import { formatCurrency } from '~/utils/number';
 import { formatDate } from '~/utils/date';
-import { InvoiceStatus } from '~/lib/types/invoice';
+import { Invoice, InvoiceStatus } from '~/lib/types/invoice';
 import { INVOICE_STATUS } from '~/constants/invoice';
 
 const INVOICE_STATUS_COLORS: Record<
@@ -34,23 +33,21 @@ const INVOICE_STATUS_COLORS: Record<
   [InvoiceStatus.PENDING]: 'warning',
 };
 
-export default function InvoiceList() {
+export default function InvoiceList({ invoices }: { invoices: Invoice[] }) {
   const router = useRouter();
-  const { invoices, fetchInvoices } = useInvoices();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<{
+    [key: string]: HTMLElement | null;
+  }>({});
 
-  useEffect(() => {
-    fetchInvoices();
-  }, []);
-
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    setAnchorEl((prev) => ({ ...prev, [id]: event.currentTarget }));
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (id: string) => {
+    setAnchorEl((prev) => ({ ...prev, [id]: null }));
   };
 
   const handleEdit = (id: string) => {
@@ -58,7 +55,7 @@ export default function InvoiceList() {
   };
 
   const handleDelete = (id: string) => {
-    handleClose();
+    handleClose(id);
   };
 
   return (
@@ -128,7 +125,10 @@ export default function InvoiceList() {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton aria-label="Actions" onClick={handleClick}>
+                    <IconButton
+                      aria-label="Actions"
+                      onClick={(e) => handleClick(e, invoice.id)}
+                    >
                       <Image
                         src="/icon-menu.svg"
                         alt="Actions"
@@ -136,7 +136,11 @@ export default function InvoiceList() {
                         height={18}
                       />
                     </IconButton>
-                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                    <Menu
+                      anchorEl={anchorEl[invoice.id] || null}
+                      open={Boolean(anchorEl[invoice.id])}
+                      onClose={() => handleClose(invoice.id)}
+                    >
                       <MenuItem onClick={() => handleEdit(invoice.id)}>
                         Edit
                       </MenuItem>

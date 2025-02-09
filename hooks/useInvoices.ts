@@ -17,9 +17,32 @@ export function useInvoices() {
     return invoices.find((invoice) => invoice.id === id);
   };
 
-  const fetchInvoices = async () => {
-    const invoices = localStorage.getItem('invoices');
-    setInvoices(invoices ? JSON.parse(invoices) : []);
+  const fetchInvoices = async ({
+    keywords = '',
+    status = '',
+  }: {
+    keywords?: string;
+    status?: string;
+  } = {}) => {
+    const result = localStorage.getItem('invoices');
+    const invoices = result ? JSON.parse(result) : [];
+    let filteredInvoices = invoices;
+
+    if (keywords?.trim()) {
+      filteredInvoices = filteredInvoices.filter(
+        (invoice: Invoice) =>
+          invoice.name.toLowerCase().includes(keywords.toLowerCase()) ||
+          invoice.number.toLowerCase().includes(keywords.toLowerCase())
+      );
+    }
+
+    if (status) {
+      filteredInvoices = filteredInvoices.filter(
+        (invoice: Invoice) => invoice.status === status
+      );
+    }
+
+    setInvoices(filteredInvoices);
   };
 
   const addInvoice = (invoice: Omit<Invoice, 'id'>) => {

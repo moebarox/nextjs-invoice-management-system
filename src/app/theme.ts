@@ -49,12 +49,36 @@ const theme = createTheme({
         input: {
           padding: '13px 22px',
           fontSize: 16,
+          lineHeight: 1.5,
           '::placeholder': {
             color: '#64748B',
           },
         },
         notchedOutline: {
           border: '1.5px solid #E2E8F0',
+        },
+      },
+    },
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FFF !important',
+          borderRadius: '10px',
+          '::before': {
+            border: 'none !important',
+          },
+          '::after': {
+            border: 'none !important',
+          },
+        },
+        input: {
+          padding: '10px 22px',
+          fontSize: 12,
+          lineHeight: 1.5,
+          color: '#7E7E7E',
+          '::placeholder': {
+            color: '#B5B7C0',
+          },
         },
       },
     },
