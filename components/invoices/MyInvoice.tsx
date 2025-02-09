@@ -11,14 +11,16 @@ export default function MyInvoice() {
   const searchParams = useSearchParams();
   const { invoices, fetchInvoices, deleteInvoice } = useInvoices();
 
-  const [isFetched, setIsFetched] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+
     async function initData() {
       fetchInvoices({
         keywords: searchParams.get('keywords') || '',
         status: searchParams.get('status') || '',
-      }).then(() => setIsFetched(true));
+      }).then(() => setIsLoading(false));
     }
 
     initData();
@@ -37,8 +39,8 @@ export default function MyInvoice() {
         <InvoiceListFilter />
       </Stack>
 
-      {!isFetched ? (
-        <Box textAlign="center" sx={{ py: 10 }}>
+      {isLoading ? (
+        <Box textAlign="center" sx={{ py: 5 }}>
           <CircularProgress />
         </Box>
       ) : (
