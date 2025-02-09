@@ -1,9 +1,7 @@
-import { memo, useEffect, useState } from 'react';
+import { memo } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
-import { useForm, Controller } from 'react-hook-form';
-import { debounce } from 'lodash';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, Control, FieldErrors } from 'react-hook-form';
 import {
   Button,
   Grid2,
@@ -20,9 +18,7 @@ import {
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { InvoiceFormData } from '~/lib/types/invoice';
-import { invoiceSchema } from '~/lib/schemas/invoice';
 import { INVOICE_STATUS } from '~/constants/invoice';
-import Toast from '~/components/base/Toast';
 
 // Create a memoized icon to avoid glitching
 const ChevronIcon = memo((props) => (
@@ -38,48 +34,18 @@ const ChevronIcon = memo((props) => (
 ChevronIcon.displayName = 'ChevronIcon';
 
 export default function InvoiceForm({
-  invoice,
+  control,
+  errors,
+  onSubmit,
   submitText,
-  onUpdate,
-  onSave,
 }: {
-  invoice: InvoiceFormData;
+  control: Control<InvoiceFormData>;
+  errors: FieldErrors<InvoiceFormData>;
+  onSubmit: VoidFunction;
   submitText?: string;
-  onUpdate: (invoice: Partial<InvoiceFormData>) => void;
-  onSave: (invoice: InvoiceFormData) => void;
 }) {
-  const [openToast, setOpenToast] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm<InvoiceFormData>({
-    resolver: zodResolver(invoiceSchema),
-    defaultValues: invoice,
-    mode: 'onChange',
-  });
-
-  useEffect(() => {
-    const debouncedUpdate = debounce((value) => {
-      onUpdate(value);
-    }, 300);
-
-    const subscription = watch(debouncedUpdate);
-    return () => {
-      subscription.unsubscribe();
-      debouncedUpdate.cancel();
-    };
-  }, [watch]);
-
-  const handleSave = (data: InvoiceFormData) => {
-    onSave(data);
-    setOpenToast(true);
-  };
-
   return (
-    <Stack component="form" gap="58px" onSubmit={handleSubmit(handleSave)}>
+    <Stack component="form" gap="58px" onSubmit={onSubmit}>
       <Grid2 container columnSpacing="35px" rowSpacing="18px">
         <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
@@ -92,19 +58,25 @@ export default function InvoiceForm({
                 *
               </Typography>
             </InputLabel>
-            <TextField
-              id="invoice-name"
-              placeholder="Enter your invoice name"
-              {...register('name')}
-              error={!!errors.name}
-              helperText={errors.name?.message}
-              fullWidth
+            <Controller
+              name="name"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  id="invoice-name"
+                  placeholder="Enter your invoice name"
+                  {...field}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  fullWidth
+                />
+              )}
             />
           </FormControl>
         </Grid2>
         <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
-            <InputLabel htmlFor="invoice-name">
+            <InputLabel htmlFor="invoice-number">
               Number
               <Typography
                 component="span"
@@ -113,20 +85,26 @@ export default function InvoiceForm({
                 *
               </Typography>
             </InputLabel>
-            <TextField
-              id="invoice-number"
-              placeholder="Enter your invoice number"
-              {...register('number')}
-              error={!!errors.number}
-              helperText={errors.number?.message}
-              disabled
-              fullWidth
+            <Controller
+              name="number"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  id="invoice-number"
+                  placeholder="Enter your invoice number"
+                  {...field}
+                  error={!!errors.number}
+                  helperText={errors.number?.message}
+                  disabled
+                  fullWidth
+                />
+              )}
             />
           </FormControl>
         </Grid2>
         <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
-            <InputLabel htmlFor="invoice-name">
+            <InputLabel htmlFor="invoice-due-date">
               Due Date
               <Typography
                 component="span"
@@ -145,6 +123,7 @@ export default function InvoiceForm({
                     onChange={(value: Dayjs | null) => field.onChange(value)}
                     slotProps={{
                       textField: {
+                        id: 'invoice-due-date',
                         error: !!errors.dueDate,
                         helperText: errors.dueDate?.message,
                         fullWidth: true,
@@ -158,7 +137,7 @@ export default function InvoiceForm({
         </Grid2>
         <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
-            <InputLabel htmlFor="invoice-name">
+            <InputLabel htmlFor="invoice-amount">
               Amount
               <Typography
                 component="span"
@@ -167,26 +146,32 @@ export default function InvoiceForm({
                 *
               </Typography>
             </InputLabel>
-            <TextField
-              id="invoice-amount"
-              placeholder="Enter your invoice amount"
-              {...register('amount')}
-              error={!!errors.amount}
-              helperText={errors.amount?.message}
-              fullWidth
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">Rp</InputAdornment>
-                  ),
-                },
-              }}
+            <Controller
+              name="amount"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  id="invoice-amount"
+                  placeholder="Enter your invoice amount"
+                  {...field}
+                  error={!!errors.amount}
+                  helperText={errors.amount?.message}
+                  fullWidth
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">Rp</InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
             />
           </FormControl>
         </Grid2>
         <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
-            <InputLabel htmlFor="invoice-name">
+            <InputLabel htmlFor="invoice-status">
               Status
               <Typography
                 component="span"
@@ -200,8 +185,8 @@ export default function InvoiceForm({
               control={control}
               render={({ field }) => (
                 <Select
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  labelId="invoice-status"
+                  {...field}
                   error={!!errors.status}
                   fullWidth
                   IconComponent={ChevronIcon}
@@ -223,13 +208,6 @@ export default function InvoiceForm({
           {submitText}
         </Button>
       </Box>
-
-      <Toast
-        open={openToast}
-        onClose={() => setOpenToast(false)}
-        title="Invoice added successfully!"
-        message="You can view and manage your invoice in the 'My Invoices' section."
-      />
     </Stack>
   );
 }

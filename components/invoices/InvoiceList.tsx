@@ -118,14 +118,14 @@ export default function InvoiceList({
                   align="center"
                   sx={{ backgroundColor: '#F7F9FC', fontWeight: 600 }}
                 >
-                  Action
+                  Actions
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {invoices.map((invoice) => (
                 <TableRow
-                  key={invoice.name}
+                  key={invoice.id}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell component="th" scope="row">

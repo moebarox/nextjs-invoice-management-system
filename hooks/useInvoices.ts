@@ -4,7 +4,7 @@ import type { Invoice, InvoiceFormData } from '~/lib/types/invoice';
 export function useInvoices() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
 
-  const getInvoiceFormData = () => {
+  const getInvoiceFormData = (): InvoiceFormData | null => {
     const invoice = localStorage.getItem('invoice-form');
     return invoice ? JSON.parse(invoice) : null;
   };
