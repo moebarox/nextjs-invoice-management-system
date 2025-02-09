@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  Badge,
 } from '@mui/material';
 import ThemeSwitch from '~/components/base/ThemeSwitch';
 import SidebarMobile from '~/components/layout/SidebarMobile';
@@ -76,21 +77,32 @@ export default function Header() {
                 priority
               />
             </IconButton>
-            <IconButton
-              aria-label="Message"
+            <Badge
+              variant="dot"
+              color="error"
               sx={{
-                backgroundColor: '#EFF4FB',
-                border: '0.5px solid #E2E8F0',
+                '& .MuiBadge-badge': {
+                  top: 4,
+                  right: 4,
+                },
               }}
             >
-              <Image
-                src="/icon-chat.svg"
-                alt="Message"
-                width={18}
-                height={18}
-                priority
-              />
-            </IconButton>
+              <IconButton
+                aria-label="Message"
+                sx={{
+                  backgroundColor: '#EFF4FB',
+                  border: '0.5px solid #E2E8F0',
+                }}
+              >
+                <Image
+                  src="/icon-chat.svg"
+                  alt="Message"
+                  width={18}
+                  height={18}
+                  priority
+                />
+              </IconButton>
+            </Badge>
           </Stack>
 
           <Button onClick={handleClick} sx={{ p: 0 }}>
