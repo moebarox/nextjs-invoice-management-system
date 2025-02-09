@@ -6,6 +6,7 @@ import Sidebar from '~/components/layout/Sidebar';
 import Header from '~/components/layout/Header';
 import theme from './theme';
 import './globals.css';
+import { useState } from 'react';
 
 const openSans = Open_Sans({
   subsets: ['latin'],
@@ -51,11 +52,12 @@ export default function RootLayout({
       <body className={openSans.variable}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <Stack direction="row" alignItems="stretch">
+            <Box display="flex">
               <Sidebar />
               <Box
+                component="main"
                 sx={{
-                  width: 'calc(100vw - 280px)',
+                  width: { xs: '100%', md: 'calc(100vw - 280px)' },
                   minHeight: '100svh',
                   backgroundColor: '#F1F5F9',
                 }}
@@ -64,15 +66,15 @@ export default function RootLayout({
                   <Header />
                   <Box
                     sx={{
-                      py: '52px',
-                      px: '136px',
+                      py: { xs: '32px', md: '52px' },
+                      px: { xs: '32px', sm: '85px', lg: '136px' },
                     }}
                   >
                     {children}
                   </Box>
                 </Stack>
               </Box>
-            </Stack>
+            </Box>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

@@ -42,7 +42,7 @@ export default function InvoiceListFilter() {
 
   return (
     <Stack direction="row" gap="25px">
-      <FormControl variant="filled" size="small" sx={{ minWidth: 216 }}>
+      <FormControl variant="filled" size="small" sx={{ flexGrow: 1 }}>
         <TextField
           variant="filled"
           placeholder="Search"

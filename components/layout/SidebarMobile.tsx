@@ -1,15 +1,18 @@
+'use client';
+
 import Image from 'next/image';
 import { Box, Stack, Drawer } from '@mui/material';
 import SidebarMenu from '~/components/layout/SidebarMenu';
 
-export default function SideMenu() {
+export default function SideMenu({
+  open,
+  toggleDrawer,
+}: {
+  open: boolean;
+  toggleDrawer: (open: boolean) => void;
+}) {
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        display: { xs: 'none', md: 'block' },
-      }}
-    >
+    <Drawer open={open} onClose={() => toggleDrawer(false)}>
       <Box
         sx={{
           width: '100%',
@@ -26,7 +29,7 @@ export default function SideMenu() {
             priority
           />
 
-          <SidebarMenu />
+          <SidebarMenu onMenuClick={() => toggleDrawer(false)} />
         </Stack>
       </Box>
     </Drawer>

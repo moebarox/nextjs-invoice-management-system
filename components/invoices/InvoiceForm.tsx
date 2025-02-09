@@ -66,7 +66,7 @@ export default function InvoiceForm({
   return (
     <Stack component="form" gap="58px" onSubmit={handleSubmit(handleSave)}>
       <Grid2 container columnSpacing="35px" rowSpacing="18px">
-        <Grid2 size={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
             <InputLabel htmlFor="invoice-name">
               Name
@@ -87,7 +87,7 @@ export default function InvoiceForm({
             />
           </FormControl>
         </Grid2>
-        <Grid2 size={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
             <InputLabel htmlFor="invoice-name">
               Number
@@ -109,7 +109,7 @@ export default function InvoiceForm({
             />
           </FormControl>
         </Grid2>
-        <Grid2 size={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
             <InputLabel htmlFor="invoice-name">
               Due Date
@@ -135,7 +135,7 @@ export default function InvoiceForm({
             </LocalizationProvider>
           </FormControl>
         </Grid2>
-        <Grid2 size={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
             <InputLabel htmlFor="invoice-name">
               Amount
@@ -156,7 +156,7 @@ export default function InvoiceForm({
             />
           </FormControl>
         </Grid2>
-        <Grid2 size={6}>
+        <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
             <InputLabel htmlFor="invoice-name">
               Status

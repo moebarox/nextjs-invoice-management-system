@@ -24,7 +24,11 @@ export default function MyInvoice() {
 
   return (
     <Stack gap={4}>
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        justifyContent="space-between"
+        rowGap={4}
+      >
         <Typography variant="h4" component="h1">
           My Invoices
         </Typography>

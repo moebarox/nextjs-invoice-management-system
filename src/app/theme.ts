@@ -22,6 +22,20 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiDrawer: {
+      styleOverrides: {
+        root: {
+          width: 280,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: 280,
+            backgroundColor: '#1C2434',
+            border: 'none',
+            borderRadius: 0,
+          },
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {
