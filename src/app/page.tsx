@@ -1,5 +1,10 @@
+import { Suspense } from 'react';
 import MyInvoice from '~/components/invoices/MyInvoice';
 
 export default function MyInvoicePage() {
-  return <MyInvoice />;
+  return (
+    <Suspense>
+      <MyInvoice />
+    </Suspense>
+  );
 }

@@ -48,12 +48,13 @@ export default function InvoiceListFilter() {
   };
 
   return (
-    <Stack direction="row" gap="25px">
+    <Stack direction="row" gap="25px" data-testid="invoice-filter">
       <FormControl variant="filled" size="small" sx={{ flexGrow: 1 }}>
         <TextField
           variant="filled"
           placeholder="Search"
           value={filter.keywords}
+          data-testid="filter-keywords"
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, keywords: e.target.value }))
           }
@@ -77,6 +78,7 @@ export default function InvoiceListFilter() {
         <Select
           displayEmpty
           value={filter.status}
+          data-testid="filter-status"
           onChange={(e) =>
             setFilter((prev) => ({ ...prev, status: e.target.value }))
           }

@@ -43,6 +43,7 @@ export default function Header() {
         <IconButton
           aria-label="Menu"
           sx={{ display: { xs: 'flex', md: 'none' } }}
+          data-testid="sidebar-toggle"
         >
           <Image
             src="/icon-menu.svg"
@@ -64,6 +65,7 @@ export default function Header() {
           <Stack direction="row" gap="15px">
             <IconButton
               aria-label="Notification"
+              data-testid="menu-notification"
               sx={{
                 backgroundColor: '#EFF4FB',
                 border: '0.5px solid #E2E8F0',
@@ -89,6 +91,7 @@ export default function Header() {
             >
               <IconButton
                 aria-label="Message"
+                data-testid="menu-message"
                 sx={{
                   backgroundColor: '#EFF4FB',
                   border: '0.5px solid #E2E8F0',
@@ -105,7 +108,11 @@ export default function Header() {
             </Badge>
           </Stack>
 
-          <Button onClick={handleClick} sx={{ p: 0 }}>
+          <Button
+            data-testid="menu-profile"
+            onClick={handleClick}
+            sx={{ p: 0 }}
+          >
             <Stack
               direction="row"
               alignItems="center"

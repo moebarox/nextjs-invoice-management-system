@@ -45,7 +45,12 @@ export default function InvoiceForm({
   submitText?: string;
 }) {
   return (
-    <Stack component="form" gap="58px" onSubmit={onSubmit}>
+    <Stack
+      component="form"
+      gap="58px"
+      onSubmit={onSubmit}
+      data-testid="invoice-form"
+    >
       <Grid2 container columnSpacing="35px" rowSpacing="18px">
         <Grid2 size={{ xs: 12, md: 6 }}>
           <FormControl variant="outlined" fullWidth sx={{ gap: '12px' }}>
@@ -69,6 +74,7 @@ export default function InvoiceForm({
                   error={!!errors.name}
                   helperText={errors.name?.message}
                   fullWidth
+                  data-testid="form-name"
                 />
               )}
             />
@@ -97,6 +103,7 @@ export default function InvoiceForm({
                   helperText={errors.number?.message}
                   disabled
                   fullWidth
+                  data-testid="form-number"
                 />
               )}
             />
@@ -157,6 +164,7 @@ export default function InvoiceForm({
                   error={!!errors.amount}
                   helperText={errors.amount?.message}
                   fullWidth
+                  data-testid="form-amount"
                   slotProps={{
                     input: {
                       startAdornment: (
@@ -190,6 +198,7 @@ export default function InvoiceForm({
                   error={!!errors.status}
                   fullWidth
                   IconComponent={ChevronIcon}
+                  data-testid="form-status"
                 >
                   {Object.entries(INVOICE_STATUS).map((status) => (
                     <MenuItem key={status[0]} value={status[0]}>

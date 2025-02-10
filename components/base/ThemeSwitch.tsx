@@ -3,6 +3,7 @@ import { Switch } from '@mui/material';
 export default function ThemeSwitch() {
   return (
     <Switch
+      data-testid="theme-switch"
       sx={{
         width: 56,
         height: 30,

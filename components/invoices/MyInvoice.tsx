@@ -24,7 +24,7 @@ export default function MyInvoice() {
     }
 
     initData();
-  }, [searchParams]);
+  }, [searchParams.toString()]);
 
   return (
     <Stack gap={4}>
@@ -41,7 +41,7 @@ export default function MyInvoice() {
 
       {isLoading ? (
         <Box textAlign="center" sx={{ py: 5 }}>
-          <CircularProgress />
+          <CircularProgress data-testid="invoice-loading" />
         </Box>
       ) : (
         <InvoiceList invoices={invoices} onDelete={deleteInvoice} />

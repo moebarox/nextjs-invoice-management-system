@@ -25,13 +25,16 @@ export default function SidebarMenu({
   };
 
   return (
-    <Stack gap="17px">
+    <Stack gap="17px" data-testid="sidebar-menu">
       <Typography variant="body2" sx={{ color: '#9D9D9D' }}>
         MENU
       </Typography>
       <List>
         <ListItem disablePadding>
-          <ListItemButton selected={isSelected('/create')}>
+          <ListItemButton
+            data-testid="menu-add-invoice"
+            selected={isSelected('/create')}
+          >
             <ListItemIcon>
               <Image
                 src="/icon-paragraph.svg"
@@ -48,7 +51,10 @@ export default function SidebarMenu({
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton selected={isSelected('/')}>
+          <ListItemButton
+            data-testid="menu-my-invoices"
+            selected={isSelected('/')}
+          >
             <ListItemIcon>
               <Image
                 src="/icon-list.svg"

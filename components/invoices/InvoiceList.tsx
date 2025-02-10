@@ -87,7 +87,7 @@ export default function InvoiceList({
   };
 
   return (
-    <Paper>
+    <Paper data-testid="invoice-list">
       <Box
         sx={{
           pt: '30px',
@@ -96,7 +96,12 @@ export default function InvoiceList({
         }}
       >
         {invoices.length === 0 ? (
-          <Typography variant="body1" component="p" align="center">
+          <Typography
+            variant="body1"
+            component="p"
+            align="center"
+            data-testid="invoice-empty"
+          >
             No invoice found
           </Typography>
         ) : (
@@ -138,15 +143,20 @@ export default function InvoiceList({
                   {invoices.map((invoice) => (
                     <TableRow
                       key={invoice.id}
+                      data-testid={`invoice-item-${invoice.id}`}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
                         <Stack>
-                          <Typography variant="body1">
+                          <Typography
+                            variant="body1"
+                            data-testid={`invoice-name-${invoice.id}`}
+                          >
                             {invoice.name}
                           </Typography>
                           <Typography
                             variant="caption"
+                            data-testid={`invoice-number-${invoice.id}`}
                             sx={{
                               color: '#64748B',
                               fontWeight: 600,
@@ -157,7 +167,10 @@ export default function InvoiceList({
                         </Stack>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          data-testid={`invoice-due-date-${invoice.id}`}
+                        >
                           {formatDate(invoice.dueDate)}
                         </Typography>
                       </TableCell>
@@ -165,10 +178,14 @@ export default function InvoiceList({
                         <Chip
                           label={INVOICE_STATUS[invoice.status]}
                           color={INVOICE_STATUS_COLORS[invoice.status]}
+                          data-testid={`invoice-status-${invoice.id}`}
                         />
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body1">
+                        <Typography
+                          variant="body1"
+                          data-testid={`invoice-amount-${invoice.id}`}
+                        >
                           {formatCurrency(invoice.amount)}
                         </Typography>
                       </TableCell>

@@ -24,6 +24,7 @@ export default function SideMenu() {
             width={166}
             height={44}
             priority
+            data-testid="logo"
           />
 
           <SidebarMenu />
